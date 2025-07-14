@@ -272,7 +272,7 @@ export default function Contact() {
                     >
                       <Button
                         type="submit"
-                        className="w-full md:w-auto bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg"
+                        className="w-full md:w-auto bg-primary hover:bg-primary/90"
                         disabled={mutation.isPending}
                         size="lg"
                       >

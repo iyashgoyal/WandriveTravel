@@ -46,7 +46,7 @@ export default function PackageCard({ package: pkg, index }: PackageCardProps) {
             transition={{ duration: 0.3 }}
           />
           <motion.div 
-            className="absolute top-2 right-2 bg-gradient-to-r from-orange-500 to-red-600 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg"
+            className="absolute top-2 right-2 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
@@ -88,13 +88,13 @@ export default function PackageCard({ package: pkg, index }: PackageCardProps) {
         <CardFooter className="p-4 pt-0 space-x-2">
           <Button 
             variant="outline"
-            className="w-1/2 border-orange-200 text-orange-700 hover:bg-orange-50"
+            className="w-1/2"
             onClick={() => setLocation(`/packages/${pkg.id}`)}
           >
             View Details
           </Button>
           <Button 
-            className="w-1/2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg"
+            className="w-1/2 bg-primary hover:bg-primary/90"
             onClick={() => setLocation(`/contact?package=${pkg.id}`)}
           >
             Book Now
