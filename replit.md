@@ -4,6 +4,8 @@
 A professional travel agency website called "Wandrivo" targeting the Indian market with domestic and international travel packages. The website features responsive design, colorful gradients, and modern UI components.
 
 ## Recent Changes
+- **Vercel Deployment Configuration** (Jan 14, 2025): Added vercel.json, serverless function setup, and deployment documentation for easy Vercel deployment
+- **Border Radius Optimization** (Jan 14, 2025): Reduced theme radius from 12 to 6 to prevent button cutoff issues in package cards
 - **Uniform Color Scheme Implementation** (Jan 14, 2025): Applied consistent orange-amber-yellow gradient backgrounds across all pages with gradient text headings
 - **Enhanced UI Components** (Jan 14, 2025): Updated package cards, footer, and buttons with glassmorphism effects and consistent orange-red gradient styling
 - **Video Background Hero Section** (Jan 14, 2025): Added looping beach drone footage with gradient tinted overlay for enhanced visual appeal
