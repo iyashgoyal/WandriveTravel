@@ -31,16 +31,16 @@ export default function PackageDetail() {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-screen py-8 px-4 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
       <div className="container mx-auto max-w-6xl">
         {/* Hero Section */}
-        <div className="relative h-[50vh] rounded-xl overflow-hidden mb-8">
+        <div className="relative h-[50vh] rounded-xl overflow-hidden mb-8 shadow-2xl">
           <img
             src={pkg.imageUrl}
             alt={pkg.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/40 to-black/50" />
           <div className="absolute bottom-0 left-0 right-0 p-8">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}

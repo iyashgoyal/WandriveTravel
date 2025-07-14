@@ -27,7 +27,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="py-16 px-4">
+    <div className="py-16 px-4 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 min-h-screen">
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -35,7 +35,11 @@ export default function Dashboard() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-pink-600">
+              User Dashboard
+            </span>
+          </h1>
           <p className="text-gray-600">Manage your travel inquiries</p>
         </motion.div>
 

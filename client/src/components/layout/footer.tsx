@@ -2,12 +2,16 @@ import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from "lucide-react"
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">Wandrivo</h3>
+            <h3 className="text-2xl font-bold mb-4">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">
+                Wandrivo
+              </span>
+            </h3>
             <p className="text-gray-400">
               Your trusted partner for unforgettable travel experiences and adventures around the world.
             </p>

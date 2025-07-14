@@ -13,10 +13,12 @@ export default function Home() {
       <Hero />
 
       {/* Top Destinations */}
-      <section className="py-16 px-4 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <section className="py-16 px-4 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
         <div className="container mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-            Popular Destinations
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-pink-600">
+              Popular Destinations
+            </span>
           </h2>
 
           {isLoading ? (

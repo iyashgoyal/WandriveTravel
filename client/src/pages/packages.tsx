@@ -104,10 +104,14 @@ export default function Packages() {
   };
 
   return (
-    <div className="py-16 px-4 bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 min-h-screen">
+    <div className="py-16 px-4 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 min-h-screen">
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-bold text-gray-800">Travel Packages</h1>
+          <h1 className="text-4xl md:text-5xl font-bold">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-pink-600">
+              Travel Packages
+            </span>
+          </h1>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" className="md:hidden">

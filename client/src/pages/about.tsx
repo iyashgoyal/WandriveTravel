@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export default function About() {
   return (
-    <div className="py-16 px-4 bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 min-h-screen">
+    <div className="py-16 px-4 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 min-h-screen">
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -10,7 +10,11 @@ export default function About() {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center mb-16"
         >
-          <h1 className="text-4xl font-bold mb-6">About Wandrivo</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-red-600 to-pink-600">
+              About Wandrivo
+            </span>
+          </h1>
           <p className="text-lg text-gray-600">
             Your trusted partner in creating unforgettable travel experiences since 2010.
           </p>
@@ -52,21 +56,21 @@ export default function About() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
         >
-          <div className="text-center p-6">
-            <h3 className="text-xl font-bold mb-3">Passion</h3>
-            <p className="text-gray-600">
+          <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg">
+            <h3 className="text-xl font-bold mb-3 text-orange-700">Passion</h3>
+            <p className="text-gray-700">
               We're passionate about travel and sharing the world's wonders with our clients.
             </p>
           </div>
-          <div className="text-center p-6">
-            <h3 className="text-xl font-bold mb-3">Excellence</h3>
-            <p className="text-gray-600">
+          <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg">
+            <h3 className="text-xl font-bold mb-3 text-orange-700">Excellence</h3>
+            <p className="text-gray-700">
               We strive for excellence in every journey we plan and every service we provide.
             </p>
           </div>
-          <div className="text-center p-6">
-            <h3 className="text-xl font-bold mb-3">Innovation</h3>
-            <p className="text-gray-600">
+          <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg">
+            <h3 className="text-xl font-bold mb-3 text-orange-700">Innovation</h3>
+            <p className="text-gray-700">
               We constantly innovate to create unique and memorable travel experiences.
             </p>
           </div>
