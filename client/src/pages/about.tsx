@@ -56,21 +56,21 @@ export default function About() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
         >
-          <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg">
-            <h3 className="text-xl font-bold mb-3 text-orange-700">Passion</h3>
-            <p className="text-gray-700">
+          <div className="text-center p-6">
+            <h3 className="text-xl font-bold mb-3">Passion</h3>
+            <p className="text-gray-600">
               We're passionate about travel and sharing the world's wonders with our clients.
             </p>
           </div>
-          <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg">
-            <h3 className="text-xl font-bold mb-3 text-orange-700">Excellence</h3>
-            <p className="text-gray-700">
+          <div className="text-center p-6">
+            <h3 className="text-xl font-bold mb-3">Excellence</h3>
+            <p className="text-gray-600">
               We strive for excellence in every journey we plan and every service we provide.
             </p>
           </div>
-          <div className="text-center p-6 bg-white/60 backdrop-blur-sm rounded-xl shadow-lg">
-            <h3 className="text-xl font-bold mb-3 text-orange-700">Innovation</h3>
-            <p className="text-gray-700">
+          <div className="text-center p-6">
+            <h3 className="text-xl font-bold mb-3">Innovation</h3>
+            <p className="text-gray-600">
               We constantly innovate to create unique and memorable travel experiences.
             </p>
           </div>

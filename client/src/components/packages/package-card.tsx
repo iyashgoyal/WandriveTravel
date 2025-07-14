@@ -33,7 +33,7 @@ export default function PackageCard({ package: pkg, index }: PackageCardProps) {
       }}
       className="h-full"
     >
-      <Card className="overflow-hidden h-full flex flex-col hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm hover:bg-white/90">
+      <Card className="overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300">
         <div 
           className="aspect-[4/3] relative overflow-hidden cursor-pointer"
           onClick={() => setLocation(`/packages/${pkg.id}`)}

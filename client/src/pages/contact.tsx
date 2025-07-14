@@ -112,29 +112,29 @@ export default function Contact() {
             animate="visible"
           >
             <motion.div variants={itemAnimation}>
-              <Card className="bg-white/80 backdrop-blur-sm border-orange-200 shadow-lg">
+              <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-orange-700">
-                    <Phone className="h-5 w-5 text-orange-600" />
+                  <CardTitle className="flex items-center gap-2">
+                    <Phone className="h-5 w-5 text-primary" />
                     Phone
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 font-medium">+1-800-WANDRIVO</p>
+                  <p className="text-sm">+1-800-WANDRIVO</p>
                 </CardContent>
               </Card>
             </motion.div>
 
             <motion.div variants={itemAnimation}>
-              <Card className="bg-white/80 backdrop-blur-sm border-orange-200 shadow-lg">
+              <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-orange-700">
-                    <Mail className="h-5 w-5 text-orange-600" />
+                  <CardTitle className="flex items-center gap-2">
+                    <Mail className="h-5 w-5 text-primary" />
                     Email
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-700 font-medium">info@wandrivo.com</p>
+                  <p className="text-sm">info@wandrivo.com</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -147,10 +147,10 @@ export default function Contact() {
             initial="hidden"
             animate="visible"
           >
-            <Card className="bg-white/90 backdrop-blur-sm border-orange-200 shadow-xl">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-orange-700 text-xl">Send us a message</CardTitle>
-                <CardDescription className="text-gray-600">
+                <CardTitle>Send us a message</CardTitle>
+                <CardDescription>
                   Fill out the form below and we'll get back to you as soon as possible.
                 </CardDescription>
               </CardHeader>
