@@ -85,7 +85,7 @@ export default function Contact() {
   });
 
   return (
-    <div className="min-h-screen py-16 px-4 bg-gradient-to-b from-background to-primary/5">
+    <div className="min-h-screen py-16 px-4 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50">
       <div className="container mx-auto max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

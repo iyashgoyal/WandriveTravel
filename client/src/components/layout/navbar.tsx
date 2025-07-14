@@ -24,12 +24,9 @@ const categories = [
   {
     name: "Travel Packages",
     items: [
-      { name: "Domestic Trips", href: "/packages?category=Domestic Trips" },
-      { name: "International Trips", href: "/packages?category=International Trips" },
-      { name: "Group Tours", href: "/packages?category=Group Tours" },
-      { name: "Honeymoon Packages", href: "/packages?category=Honeymoon Packages" },
-      { name: "Weekend Getaways", href: "/packages?category=Weekend Getaways" },
-      { name: "Adventure Trips", href: "/packages?category=Adventure Trips" },
+      { name: "Domestic Trips", href: "/packages?category=domestic" },
+      { name: "International Trips", href: "/packages?category=international" },
+      { name: "All Packages", href: "/packages" },
     ]
   }
 ];
@@ -56,9 +53,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/">
-            <a className="flex items-center space-x-2">
-              <span className="text-2xl font-bold text-primary">Wandrivo</span>
-            </a>
+            <span className="text-2xl font-bold text-primary cursor-pointer">Wandrivo</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -66,28 +61,26 @@ export default function Navbar() {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <Link href="/">
-                    <NavigationMenuLink 
-                      className={cn(
-                        "px-3 py-2 hover:text-primary transition-colors",
-                        location === "/" && "text-primary"
-                      )}
-                    >
-                      Home
-                    </NavigationMenuLink>
-                  </Link>
+                  <NavigationMenuLink 
+                    href="/"
+                    className={cn(
+                      "px-3 py-2 hover:text-primary transition-colors",
+                      location === "/" && "text-primary"
+                    )}
+                  >
+                    Home
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/about">
-                    <NavigationMenuLink 
-                      className={cn(
-                        "px-3 py-2 hover:text-primary transition-colors",
-                        location === "/about" && "text-primary"
-                      )}
-                    >
-                      About Us
-                    </NavigationMenuLink>
-                  </Link>
+                  <NavigationMenuLink 
+                    href="/about"
+                    className={cn(
+                      "px-3 py-2 hover:text-primary transition-colors",
+                      location === "/about" && "text-primary"
+                    )}
+                  >
+                    About Us
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>Travel Packages</NavigationMenuTrigger>
@@ -95,11 +88,12 @@ export default function Navbar() {
                     <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
                       {categories[0].items.map((item) => (
                         <li key={item.name}>
-                          <Link href={item.href}>
-                            <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                              {item.name}
-                            </NavigationMenuLink>
-                          </Link>
+                          <NavigationMenuLink 
+                            href={item.href}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            {item.name}
+                          </NavigationMenuLink>
                         </li>
                       ))}
                     </ul>

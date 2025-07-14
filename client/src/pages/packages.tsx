@@ -30,12 +30,8 @@ import { Filter, SortAsc, SortDesc } from "lucide-react";
 
 const categories = [
   "All",
-  "Domestic Trips",
-  "International Trips",
-  "Group Tours",
-  "Honeymoon Packages",
-  "Weekend Getaways",
-  "Adventure Trips",
+  "domestic",
+  "international",
 ];
 
 const sortOptions = [
@@ -76,6 +72,14 @@ export default function Packages() {
     }));
   };
 
+  const getCategoryLabel = (category: string) => {
+    switch (category) {
+      case "domestic": return "Domestic Trips";
+      case "international": return "International Trips";
+      default: return category;
+    }
+  };
+
   const handlePriceChange = (values: number[]) => {
     setSearchParams((prev) => ({
       ...prev,
@@ -100,10 +104,10 @@ export default function Packages() {
   };
 
   return (
-    <div className="py-16 px-4">
+    <div className="py-16 px-4 bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 min-h-screen">
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-4xl font-bold">Travel Packages</h1>
+          <h1 className="text-4xl font-bold text-gray-800">Travel Packages</h1>
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" className="md:hidden">
@@ -122,6 +126,15 @@ export default function Packages() {
                 {/* Mobile Filters */}
                 <div className="space-y-4">
                   <div>
+                    <label className="text-sm font-medium">Search Destinations</label>
+                    <Input
+                      type="text"
+                      placeholder="Search destinations..."
+                      value={searchParams.destination || ""}
+                      onChange={(e) => handleSearch(e.target.value)}
+                    />
+                  </div>
+                  <div>
                     <label className="text-sm font-medium">Category</label>
                     <Select
                       value={searchParams.category || "All"}
@@ -133,7 +146,7 @@ export default function Packages() {
                       <SelectContent>
                         {categories.map((category) => (
                           <SelectItem key={category} value={category}>
-                            {category}
+                            {category === "All" ? "All Categories" : getCategoryLabel(category)}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -183,7 +196,7 @@ export default function Packages() {
             <SelectContent>
               {categories.map((category) => (
                 <SelectItem key={category} value={category}>
-                  {category}
+                  {category === "All" ? "All Categories" : getCategoryLabel(category)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -225,11 +238,11 @@ export default function Packages() {
 
         {/* Packages Grid */}
         {isLoading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
-            {[...Array(6)].map((_, i) => (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {[...Array(8)].map((_, i) => (
               <div
                 key={i}
-                className="h-[250px] sm:h-[300px] md:h-[350px] bg-gray-100 animate-pulse rounded-lg"
+                className="h-[280px] sm:h-[320px] md:h-[380px] bg-gray-100 animate-pulse rounded-lg"
               />
             ))}
           </div>
@@ -240,7 +253,7 @@ export default function Packages() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {packages?.map((pkg, index) => (
               <PackageCard key={pkg.id} package={pkg} index={index} />
             ))}

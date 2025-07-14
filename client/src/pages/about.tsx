@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export default function About() {
   return (
-    <div className="py-16 px-4">
+    <div className="py-16 px-4 bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 min-h-screen">
       <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
