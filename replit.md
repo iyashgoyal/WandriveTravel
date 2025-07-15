@@ -4,6 +4,7 @@
 A professional travel agency website called "Wandrivo" targeting the Indian market with domestic and international travel packages. The website features responsive design, colorful gradients, and modern UI components.
 
 ## Recent Changes
+- **Fixed Vercel Deployment Issues** (Jan 15, 2025): Resolved "Function Runtimes must have a valid version" error by updating vercel.json configuration and creating CommonJS compatible API files
 - **Vercel Deployment Configuration** (Jan 14, 2025): Added vercel.json, serverless function setup, and deployment documentation for easy Vercel deployment
 - **Border Radius Optimization** (Jan 14, 2025): Reduced theme radius from 12 to 6 to prevent button cutoff issues in package cards
 - **Uniform Color Scheme Implementation** (Jan 14, 2025): Applied consistent orange-amber-yellow gradient backgrounds across all pages with gradient text headings

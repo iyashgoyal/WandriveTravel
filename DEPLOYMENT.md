@@ -66,10 +66,18 @@ The project is structured to work seamlessly with Vercel:
 
 ## Important Files
 
-- `vercel.json`: Vercel configuration
-- `api/index.js`: Serverless function entry point
-- `server/index.ts`: Express server with Vercel export
+- `vercel.json`: Vercel configuration with proper build settings
+- `api/index.js`: Serverless function entry point (CommonJS format)
+- `server/storage.js`: CommonJS storage module for Vercel compatibility
 - `dist/client/`: Built frontend files (auto-generated)
+
+## Fixed Deployment Issues
+
+The following issues have been resolved:
+
+✅ **Function Runtime Error**: Updated `vercel.json` to use proper `@vercel/node` and `@vercel/static-build` builders  
+✅ **Module Format**: Created CommonJS versions of backend files for Vercel compatibility  
+✅ **Build Configuration**: Properly configured static build with correct output directory
 
 ## Environment Variables
 
