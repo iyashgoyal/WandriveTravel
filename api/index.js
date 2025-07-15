@@ -1,51 +1,190 @@
 // Vercel serverless function entry point
-const express = require('express');
-const { storage } = require('../server/storage');
 
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-// Package routes
-app.get('/api/packages', async (req, res) => {
-  try {
-    const packages = await storage.getPackages(req.query);
-    res.json(packages);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+// Sample data
+const samplePackages = [
+  {
+    id: 1,
+    title: "Golden Triangle Explorer",
+    description: "Discover India's most iconic destinations: Delhi, Agra, and Jaipur. Experience the rich heritage, magnificent architecture, and vibrant culture of North India.",
+    price: 25000,
+    duration: "6 Days / 5 Nights",
+    location: "Delhi - Agra - Jaipur",
+    image: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=500",
+    category: "Cultural",
+    highlights: ["Taj Mahal visit", "Red Fort exploration", "Amber Palace tour", "Local market shopping"],
+    rating: 4.8,
+    reviews: 145
+  },
+  {
+    id: 2,
+    title: "Kerala Backwaters Bliss",
+    description: "Cruise through the serene backwaters of Alleppey and Kumarakom. Experience traditional houseboats, lush landscapes, and authentic Kerala cuisine.",
+    price: 18000,
+    duration: "4 Days / 3 Nights",
+    location: "Alleppey - Kumarakom",
+    image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=500",
+    category: "Beach",
+    highlights: ["Houseboat stay", "Backwater cruise", "Ayurvedic spa", "Traditional Kerala meals"],
+    rating: 4.7,
+    reviews: 98
+  },
+  {
+    id: 3,
+    title: "Himalayan Adventure Trek",
+    description: "Challenge yourself with a thrilling trek through the majestic Himalayas. Perfect for adventure enthusiasts seeking breathtaking mountain views.",
+    price: 35000,
+    duration: "8 Days / 7 Nights",
+    location: "Manali - Rohtang Pass",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500",
+    category: "Adventure",
+    highlights: ["Mountain trekking", "Camping under stars", "River rafting", "Local village visits"],
+    rating: 4.9,
+    reviews: 67
+  },
+  {
+    id: 4,
+    title: "Rajasthan Royal Heritage",
+    description: "Step into the royal history of Rajasthan. Visit magnificent palaces, desert landscapes, and experience the rich cultural traditions.",
+    price: 32000,
+    duration: "7 Days / 6 Nights",
+    location: "Udaipur - Jodhpur - Jaisalmer",
+    image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=500",
+    category: "Cultural",
+    highlights: ["Palace tours", "Desert safari", "Cultural performances", "Heritage hotels"],
+    rating: 4.6,
+    reviews: 123
+  },
+  {
+    id: 5,
+    title: "Goa Beach Paradise",
+    description: "Relax on pristine beaches, enjoy water sports, and experience the vibrant nightlife of Goa. Perfect for a tropical getaway.",
+    price: 15000,
+    duration: "5 Days / 4 Nights",
+    location: "North & South Goa",
+    image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=500",
+    category: "Beach",
+    highlights: ["Beach activities", "Water sports", "Sunset cruises", "Local seafood"],
+    rating: 4.5,
+    reviews: 201
+  },
+  {
+    id: 6,
+    title: "Ladakh High Altitude Adventure",
+    description: "Explore the mystical land of Ladakh with its stunning landscapes, ancient monasteries, and unique high-altitude desert terrain.",
+    price: 42000,
+    duration: "9 Days / 8 Nights",
+    location: "Leh - Nubra Valley - Pangong Lake",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500",
+    category: "Adventure",
+    highlights: ["Monastery visits", "High-altitude lakes", "Desert safari", "Mountain passes"],
+    rating: 4.8,
+    reviews: 89
+  },
+  {
+    id: 7,
+    title: "South India Temple Trail",
+    description: "Embark on a spiritual journey through South India's most sacred temples and experience rich cultural traditions.",
+    price: 28000,
+    duration: "8 Days / 7 Nights",
+    location: "Chennai - Madurai - Thanjavur",
+    image: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=500",
+    category: "Cultural",
+    highlights: ["Ancient temples", "Classical music", "Traditional crafts", "Sacred rituals"],
+    rating: 4.7,
+    reviews: 76
+  },
+  {
+    id: 8,
+    title: "Kashmir Valley Escape",
+    description: "Experience the paradise on earth with stunning valleys, pristine lakes, and snow-capped mountains in beautiful Kashmir.",
+    price: 38000,
+    duration: "6 Days / 5 Nights",
+    location: "Srinagar - Gulmarg - Pahalgam",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500",
+    category: "Mountain",
+    highlights: ["Shikara rides", "Skiing in Gulmarg", "Valley treks", "Mughal gardens"],
+    rating: 4.9,
+    reviews: 112
   }
-});
+];
 
-app.get('/api/packages/:id', async (req, res) => {
+let inquiries = [];
+let nextInquiryId = 1;
+
+function getPackages(params = {}) {
+  let filteredPackages = [...samplePackages];
+  
+  if (params.search) {
+    const searchTerm = params.search.toLowerCase();
+    filteredPackages = filteredPackages.filter(pkg =>
+      pkg.title.toLowerCase().includes(searchTerm) ||
+      pkg.description.toLowerCase().includes(searchTerm) ||
+      pkg.location.toLowerCase().includes(searchTerm)
+    );
+  }
+  
+  if (params.category && params.category !== 'All') {
+    filteredPackages = filteredPackages.filter(pkg => pkg.category === params.category);
+  }
+  
+  if (params.minPrice) {
+    filteredPackages = filteredPackages.filter(pkg => pkg.price >= parseInt(params.minPrice));
+  }
+  
+  if (params.maxPrice) {
+    filteredPackages = filteredPackages.filter(pkg => pkg.price <= parseInt(params.maxPrice));
+  }
+  
+  return filteredPackages;
+}
+
+function getPackage(id) {
+  return samplePackages.find(pkg => pkg.id === id);
+}
+
+function createInquiry(inquiry) {
+  const newInquiry = {
+    id: nextInquiryId++,
+    ...inquiry,
+    createdAt: new Date().toISOString()
+  };
+  inquiries.push(newInquiry);
+  return newInquiry;
+}
+
+export default function handler(req, res) {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  const { url, method } = req;
+  
   try {
-    const packageId = parseInt(req.params.id);
-    const pkg = await storage.getPackage(packageId);
-    if (!pkg) {
-      return res.status(404).json({ message: 'Package not found' });
+    if (method === 'GET' && url === '/api/packages') {
+      const packages = getPackages(req.query);
+      res.status(200).json(packages);
+    } else if (method === 'GET' && url.startsWith('/api/packages/')) {
+      const id = parseInt(url.split('/')[3]);
+      const pkg = getPackage(id);
+      if (!pkg) {
+        return res.status(404).json({ message: 'Package not found' });
+      }
+      res.status(200).json(pkg);
+    } else if (method === 'GET' && url === '/api/inquiries') {
+      res.status(200).json(inquiries);
+    } else if (method === 'POST' && url === '/api/inquiries') {
+      const inquiry = createInquiry(req.body);
+      res.status(201).json(inquiry);
+    } else {
+      res.status(404).json({ message: 'Not found' });
     }
-    res.json(pkg);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-});
-
-// Inquiry routes
-app.get('/api/inquiries', async (req, res) => {
-  try {
-    const inquiries = await storage.getInquiries();
-    res.json(inquiries);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-app.post('/api/inquiries', async (req, res) => {
-  try {
-    const inquiry = await storage.createInquiry(req.body);
-    res.status(201).json(inquiry);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-module.exports = app;
+}
