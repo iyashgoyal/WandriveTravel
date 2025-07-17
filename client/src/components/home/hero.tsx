@@ -40,7 +40,7 @@ export default function Hero() {
           transition={{ duration: 1, type: "spring", stiffness: 100 }}
           className="text-4xl md:text-7xl font-bold mb-6 tracking-tight"
         >
-          Discover Your Next Adventure
+          Wander the World
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-orange-400 to-red-400">
             with Wandrivo
