@@ -1,6 +1,5 @@
 // Vercel serverless function entry point with updated package data
-// CommonJS module for Vercel compatibility
-const { packageData } = require("../shared/packageData.js");
+import { packageData } from "../shared/packageData.js";
 
 const samplePackages = [
   // Domestic Packages
