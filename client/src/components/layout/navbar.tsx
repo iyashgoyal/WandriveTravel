@@ -55,8 +55,52 @@ export default function Navbar() {
   const [location, setLocation] = useLocation();
 
   const handleDestinationClick = (destination: string, fallbackHref: string) => {
-    // For known destinations like Bali (id: 15), directly navigate to the package
+    // Direct navigation for both domestic and international packages
     switch (destination) {
+      // Domestic Packages
+      case "Himachal Pradesh":
+        setLocation("/packages/1");
+        break;
+      case "Uttrakhand":
+        setLocation("/packages/2");
+        break;
+      case "Andaman Islands":
+        setLocation("/packages/3");
+        break;
+      case "Rajasthan":
+        setLocation("/packages/4");
+        break;
+      case "Delhi-Agra-Jaipur":
+        setLocation("/packages/5");
+        break;
+      case "Ladakh":
+        setLocation("/packages/6");
+        break;
+      case "Sikkim-Darjeeling":
+        setLocation("/packages/7");
+        break;
+      case "Meghalaya":
+        setLocation("/packages/8");
+        break;
+      case "Kashmir":
+        setLocation("/packages/9");
+        break;
+      case "Arunachal Pradesh":
+        setLocation("/packages/10");
+        break;
+      case "Goa":
+        setLocation("/packages/11");
+        break;
+      case "Kerala":
+        setLocation("/packages/12");
+        break;
+      case "Karnataka":
+        setLocation("/packages/13");
+        break;
+      case "Tamil Nadu":
+        setLocation("/packages/14");
+        break;
+      // International Packages
       case "Bali":
         setLocation("/packages/15");
         break;
@@ -82,7 +126,7 @@ export default function Navbar() {
         setLocation("/packages/22");
         break;
       default:
-        // For other destinations, use the search page
+        // For any unknown destinations, use the search page
         setLocation(fallbackHref);
     }
   };
