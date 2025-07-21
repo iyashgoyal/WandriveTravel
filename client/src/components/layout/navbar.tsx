@@ -54,19 +54,36 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useLocation();
 
-  const handleDestinationClick = async (destination: string, fallbackHref: string) => {
-    try {
-      const response = await fetch(`/api/packages/by-destination/${encodeURIComponent(destination)}`);
-      if (response.ok) {
-        const pkg = await response.json();
-        setLocation(`/packages/${pkg.id}`);
-      } else {
-        // If no exact match is found, fall back to search results
+  const handleDestinationClick = (destination: string, fallbackHref: string) => {
+    // For known destinations like Bali (id: 15), directly navigate to the package
+    switch (destination) {
+      case "Bali":
+        setLocation("/packages/15");
+        break;
+      case "Dubai":
+        setLocation("/packages/16");
+        break;
+      case "Singapore":
+        setLocation("/packages/17");
+        break;
+      case "Vietnam":
+        setLocation("/packages/18");
+        break;
+      case "Thailand":
+        setLocation("/packages/19");
+        break;
+      case "Maldives":
+        setLocation("/packages/20");
+        break;
+      case "Malaysia":
+        setLocation("/packages/21");
+        break;
+      case "Sri Lanka":
+        setLocation("/packages/22");
+        break;
+      default:
+        // For other destinations, use the search page
         setLocation(fallbackHref);
-      }
-    } catch (error) {
-      console.error('Error fetching package:', error);
-      setLocation(fallbackHref);
     }
   };
 
