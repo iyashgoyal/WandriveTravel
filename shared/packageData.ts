@@ -1,8 +1,12 @@
-// Vercel serverless function entry point with updated package data
-// CommonJS module for Vercel compatibility
-const { packageData } = require("../shared/packageData.js");
+import { Package } from './schema';
 
-const samplePackages = [
+// Define the package data with explicit typing and required fields
+export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' | 'image'> & {
+  rating?: number | null;
+  reviews?: number | null;
+  location?: string | null;
+  image?: string | null;
+}> = [
   // Domestic Packages
   {
     id: 1,
@@ -186,7 +190,6 @@ const samplePackages = [
     highlights: ["Meenakshi Temple", "Shore Temple", "Hill stations", "Classical dance"],
     itinerary: ["Day 1-2: Chennai", "Day 3-4: Madurai", "Day 5-6: Mahabalipuram"]
   },
-
   // International Packages
   {
     id: 15,
@@ -293,115 +296,3 @@ const samplePackages = [
     itinerary: ["Day 1-2: Colombo", "Day 3-4: Kandy", "Day 5-7: Nuwara Eliya"]
   }
 ];
-
-// Query functions remain the same
-function getPackages(params = {}) {
-  let filtered = [...samplePackages];
-
-  if (params.category) {
-    filtered = filtered.filter(p => p.category === params.category);
-  }
-
-  if (params.destination) {
-    const searchDestination = params.destination.toLowerCase().replace(/[+-]/g, ' ');
-    filtered = filtered.filter(p => {
-      const packageDestination = p.destination.toLowerCase();
-      return packageDestination.includes(searchDestination) || searchDestination.includes(packageDestination);
-    });
-    console.log(`Filtering by destination "${params.destination}" (normalized: "${searchDestination}"). Found ${filtered.length} matches.`);
-  }
-
-  if (params.minPrice) {
-    filtered = filtered.filter(p => p.price >= parseInt(params.minPrice));
-  }
-
-  if (params.maxPrice) {
-    filtered = filtered.filter(p => p.price <= parseInt(params.maxPrice));
-  }
-
-  if (params.minDuration) {
-    filtered = filtered.filter(p => p.duration >= parseInt(params.minDuration));
-  }
-
-  if (params.maxDuration) {
-    filtered = filtered.filter(p => p.duration <= parseInt(params.maxDuration));
-  }
-
-  if (params.subCategory) {
-    filtered = filtered.filter(p => p.subCategory === params.subCategory);
-  }
-
-  if (params.sortBy) {
-    switch (params.sortBy) {
-      case 'price_asc':
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case 'price_desc':
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case 'duration_asc':
-        filtered.sort((a, b) => a.duration - b.duration);
-        break;
-      case 'duration_desc':
-        filtered.sort((a, b) => b.duration - a.duration);
-        break;
-    }
-  }
-
-  return filtered;
-}
-
-function getPackage(id) {
-  return samplePackages.find(p => p.id === id);
-}
-
-let inquiries = [];
-let nextInquiryId = 1;
-
-function createInquiry(inquiry) {
-  const newInquiry = {
-    id: nextInquiryId++,
-    ...inquiry,
-    createdAt: new Date().toISOString()
-  };
-  inquiries.push(newInquiry);
-  return newInquiry;
-}
-
-export default function handler(req, res) {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  const { url, method } = req;
-  
-  try {
-    if (method === 'GET' && url === '/api/packages') {
-      const packages = getPackages(req.query);
-      res.status(200).json(packages);
-    } else if (method === 'GET' && url.startsWith('/api/packages/')) {
-      const id = parseInt(url.split('/')[3]);
-      const pkg = getPackage(id);
-      if (!pkg) {
-        return res.status(404).json({ message: 'Package not found' });
-      }
-      res.status(200).json(pkg);
-    } else if (method === 'GET' && url === '/api/inquiries') {
-      res.status(200).json(inquiries);
-    } else if (method === 'POST' && url === '/api/inquiries') {
-      const inquiry = createInquiry(req.body);
-      res.status(201).json(inquiry);
-    } else {
-      res.status(404).json({ message: 'Not found' });
-    }
-  } catch (error) {
-    console.error('API Error:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-}

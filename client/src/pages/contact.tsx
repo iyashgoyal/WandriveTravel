@@ -56,10 +56,14 @@ export default function Contact() {
     defaultValues: {
       name: "",
       email: "",
-      message: "",
-      travelDates: "",
-      budget: undefined,
-      packageId: packageId ? parseInt(packageId) : undefined,
+      cityOfResidence: "",
+      phoneNumber: "",
+      whatsapp: "",
+      travelDestination: "",
+      dateOfTravel: "",
+      numberOfPeople: 1,
+      vacationType: "",
+      budgetRange: "",
     },
   });
 
@@ -166,9 +170,25 @@ export default function Contact() {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Name</FormLabel>
+                            <FormLabel>Name *</FormLabel>
                             <FormControl>
-                              <Input placeholder="Your name" {...field} />
+                              <Input placeholder="Your name" {...field} required />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </motion.div>
+
+                    <motion.div variants={itemAnimation}>
+                      <FormField
+                        control={form.control}
+                        name="cityOfResidence"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>City of Residence *</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Your city" {...field} required />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -182,12 +202,13 @@ export default function Contact() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Email</FormLabel>
+                            <FormLabel>Email *</FormLabel>
                             <FormControl>
                               <Input
                                 type="email"
                                 placeholder="your@email.com"
                                 {...field}
+                                required
                               />
                             </FormControl>
                             <FormMessage />
@@ -196,22 +217,64 @@ export default function Contact() {
                       />
                     </motion.div>
 
+                    <div className="grid grid-cols-2 gap-4">
+                      <motion.div variants={itemAnimation}>
+                        <FormField
+                          control={form.control}
+                          name="phoneNumber"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phone Number *</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="tel"
+                                  placeholder="+91 XXXXX XXXXX"
+                                  {...field}
+                                  required
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </motion.div>
+
+                      <motion.div variants={itemAnimation}>
+                        <FormField
+                          control={form.control}
+                          name="whatsapp"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>WhatsApp</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="tel"
+                                  placeholder="+91 XXXXX XXXXX"
+                                  {...field}
+                                  value={field.value || ''}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </motion.div>
+                    </div>
+
                     <motion.div variants={itemAnimation}>
                       <FormField
                         control={form.control}
-                        name="travelDates"
+                        name="travelDestination"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Preferred Travel Dates</FormLabel>
+                            <FormLabel>Travel Destination *</FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="e.g., July 2024"
+                                placeholder="Where would you like to go?"
                                 {...field}
+                                required
                               />
                             </FormControl>
-                            <FormDescription>
-                              When would you like to travel?
-                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -221,43 +284,79 @@ export default function Contact() {
                     <motion.div variants={itemAnimation}>
                       <FormField
                         control={form.control}
-                        name="budget"
+                        name="dateOfTravel"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Budget (₹)</FormLabel>
+                            <FormLabel>Date of Travel *</FormLabel>
                             <FormControl>
                               <Input
-                                type="number"
-                                placeholder="Your budget in rupees"
+                                type="date"
                                 {...field}
-                                onChange={(e) =>
-                                  field.onChange(
-                                    e.target.value ? parseInt(e.target.value) : undefined
-                                  )
-                                }
+                                required
                               />
                             </FormControl>
-                            <FormDescription>
-                              What's your approximate budget for this trip?
-                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
                     </motion.div>
 
+                    <div className="grid grid-cols-2 gap-4">
+                      <motion.div variants={itemAnimation}>
+                        <FormField
+                          control={form.control}
+                          name="numberOfPeople"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Number of People *</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  min="1"
+                                  placeholder="Number of travelers"
+                                  {...field}
+                                  required
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </motion.div>
+
+                      <motion.div variants={itemAnimation}>
+                        <FormField
+                          control={form.control}
+                          name="vacationType"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Vacation Type *</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="e.g., Adventure, Leisure"
+                                  {...field}
+                                  required
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </motion.div>
+                    </div>
+
                     <motion.div variants={itemAnimation}>
                       <FormField
                         control={form.control}
-                        name="message"
+                        name="budgetRange"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Message</FormLabel>
+                            <FormLabel>Budget Range *</FormLabel>
                             <FormControl>
-                              <Textarea
-                                placeholder="Tell us about your travel plans..."
-                                className="min-h-[120px]"
+                              <Input
+                                placeholder="e.g., ₹20,000 - ₹30,000"
                                 {...field}
+                                required
                               />
                             </FormControl>
                             <FormMessage />
@@ -265,6 +364,8 @@ export default function Contact() {
                         )}
                       />
                     </motion.div>
+
+                    {/* Message field removed as it's optional */}
 
                     <motion.div 
                       variants={itemAnimation}

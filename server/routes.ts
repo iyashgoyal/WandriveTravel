@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertInquirySchema, searchParamsSchema } from "@shared/schema";
 import { z } from "zod";
+import { sendInquiryEmail } from "./email";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get all packages with optional search params
@@ -17,6 +18,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else {
         res.status(500).json({ message: "Failed to fetch packages" });
       }
+    }
+  });
+
+  // Get package by destination
+  app.get("/api/packages/by-destination/:destination", async (req, res) => {
+    try {
+      const destination = decodeURIComponent(req.params.destination);
+      const pkg = await storage.getPackageByDestination(destination);
+      if (!pkg) {
+        res.status(404).json({ message: "Package not found" });
+        return;
+      }
+      res.json(pkg);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch package" });
     }
   });
 
@@ -40,6 +56,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const inquiry = insertInquirySchema.parse(req.body);
       const created = await storage.createInquiry(inquiry);
+      
+      // Send email notification
+      try {
+        const emailSent = await sendInquiryEmail(created);
+        if (!emailSent) {
+          console.error('Failed to send email notification');
+        }
+      } catch (emailError) {
+        console.error('Error sending email:', emailError);
+      }
+
       res.status(201).json(created);
     } catch (error) {
       if (error instanceof z.ZodError) {

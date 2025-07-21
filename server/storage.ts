@@ -1,9 +1,11 @@
 import { type Package, type InsertPackage, type Inquiry, type InsertInquiry, type SearchParams } from "@shared/schema";
+import { packageData } from "../shared/packageData.js";
 
 export interface IStorage {
   // Package operations
   getPackages(params?: SearchParams): Promise<Package[]>;
   getPackage(id: number): Promise<Package | undefined>;
+  getPackageByDestination(destination: string): Promise<Package | undefined>;
   createPackage(pkg: InsertPackage): Promise<Package>;
 
   // Inquiry operations
@@ -11,44 +13,23 @@ export interface IStorage {
   createInquiry(inquiry: InsertInquiry): Promise<Inquiry>;
 }
 
-// Sample travel packages for Indian market
-const samplePackages: Package[] = [
+// Convert imported package data to match Package type
+const basePackages: Package[] = packageData.map(p => ({
+  ...p,
+  rating: 0,
+  reviews: 0,
+  location: "",
+  image: ""
+}));
+
+// Additional package data
+const additionalPackages: Package[] = [
   {
-    id: 1,
-    title: "Golden Triangle Explorer",
-    description: "Discover India's most iconic destinations - Delhi, Agra, and Jaipur. Experience the rich heritage, magnificent monuments, and vibrant culture of these historic cities.",
-    destination: "Delhi - Agra - Jaipur",
-    price: 25000,
-    duration: 6,
-    category: "domestic",
-    subCategory: "heritage",
-    imageUrl: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&q=80",
-    highlights: ["Taj Mahal visit", "Red Fort exploration", "Amber Palace tour", "Local cuisine tasting"],
-    itinerary: [
-      "Day 1-2: Delhi - Red Fort, India Gate, Lotus Temple",
-      "Day 3-4: Agra - Taj Mahal, Agra Fort, Mehtab Bagh",
-      "Day 5-6: Jaipur - Amber Palace, City Palace, Hawa Mahal"
-    ]
-  },
-  {
-    id: 2,
-    title: "Kerala Backwaters Bliss",
-    description: "Experience the tranquil beauty of Kerala's backwaters with houseboat stays, spice plantations, and pristine beaches.",
-    destination: "Kochi - Alleppey - Munnar",
-    price: 18000,
-    duration: 5,
-    category: "domestic",
-    subCategory: "nature",
-    imageUrl: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&q=80",
-    highlights: ["Houseboat cruise", "Spice plantation visit", "Tea garden tour", "Kathakali performance"],
-    itinerary: [
-      "Day 1: Kochi - Fort Kochi, Chinese Fishing Nets",
-      "Day 2-3: Alleppey - Houseboat backwater cruise",
-      "Day 4-5: Munnar - Tea plantations, hill station exploration"
-    ]
-  },
-  {
-    id: 3,
+    id: packageData.length + 1,
+    rating: 0,
+    reviews: 0,
+    location: "",
+    image: "",
     title: "Rajasthan Royal Heritage",
     description: "Journey through the royal state of Rajasthan, visiting majestic palaces, historic forts, and experiencing royal hospitality.",
     destination: "Udaipur - Jodhpur - Jaisalmer",
@@ -66,6 +47,10 @@ const samplePackages: Package[] = [
   },
   {
     id: 4,
+    rating: 0,
+    reviews: 0,
+    location: "",
+    image: "",
     title: "Himalayan Adventure Trek",
     description: "Embark on an unforgettable trekking adventure in the majestic Himalayas with stunning mountain views and spiritual experiences.",
     destination: "Rishikesh - Valley of Flowers - Hemkund Sahib",
@@ -83,6 +68,10 @@ const samplePackages: Package[] = [
   },
   {
     id: 5,
+    rating: 0,
+    reviews: 0,
+    location: "",
+    image: "",
     title: "Goa Beach Paradise",
     description: "Relax on pristine beaches, enjoy water sports, and experience the vibrant nightlife of Goa's coastal paradise.",
     destination: "North Goa - South Goa",
@@ -99,6 +88,10 @@ const samplePackages: Package[] = [
   },
   {
     id: 6,
+    rating: 0,
+    reviews: 0,
+    location: "",
+    image: "",
     title: "Thailand Cultural Journey",
     description: "Explore the temples, floating markets, and vibrant street life of Thailand while experiencing authentic Thai culture and cuisine.",
     destination: "Bangkok - Chiang Mai - Phuket",
@@ -116,6 +109,10 @@ const samplePackages: Package[] = [
   },
   {
     id: 7,
+    rating: 0,
+    reviews: 0,
+    location: "",
+    image: "",
     title: "Dubai Luxury Experience",
     description: "Experience the opulence of Dubai with luxury shopping, desert safaris, and iconic landmark visits in this modern desert metropolis.",
     destination: "Dubai - Abu Dhabi",
@@ -132,6 +129,10 @@ const samplePackages: Package[] = [
   },
   {
     id: 8,
+    rating: 0,
+    reviews: 0,
+    location: "",
+    image: "",
     title: "Singapore Modern Marvels",
     description: "Discover the futuristic cityscape of Singapore with its gardens, food culture, and architectural wonders.",
     destination: "Singapore",
@@ -149,38 +150,59 @@ const samplePackages: Package[] = [
 ];
 
 export class MemStorage implements IStorage {
-  private packages: Package[] = [...samplePackages];
+  private packages: Package[] = [
+    ...packageData.map(p => ({
+      ...p,
+      rating: 0,
+      reviews: 0,
+      location: "",
+      image: ""
+    })),
+    ...additionalPackages
+  ];
   private inquiries: Inquiry[] = [];
-  private nextPackageId = 9;
+  private nextPackageId = packageData.length + additionalPackages.length + 1;
   private nextInquiryId = 1;
 
   async getPackages(params?: SearchParams): Promise<Package[]> {
     let filteredPackages = [...this.packages];
 
     // Apply filters
-    if (params?.category) {
-      filteredPackages = filteredPackages.filter(pkg => pkg.category === params.category);
+    if (params?.category && params.category.trim()) {
+      const categoryTerm = params.category.toLowerCase();
+      filteredPackages = filteredPackages.filter(pkg => pkg.category.toLowerCase() === categoryTerm);
     }
-    if (params?.subCategory) {
-      filteredPackages = filteredPackages.filter(pkg => pkg.subCategory === params.subCategory);
+    if (params?.subCategory && params.subCategory.trim()) {
+      const subCategoryTerm = params.subCategory.toLowerCase();
+      filteredPackages = filteredPackages.filter(pkg => pkg.subCategory.toLowerCase() === subCategoryTerm);
     }
-    if (params?.destination) {
+    if (params?.destination && params.destination.trim()) {
+      const destinationTerm = params.destination.toLowerCase();
       filteredPackages = filteredPackages.filter(pkg => 
-        pkg.destination.toLowerCase().includes(params.destination!.toLowerCase()) ||
-        pkg.title.toLowerCase().includes(params.destination!.toLowerCase())
+        pkg.destination.toLowerCase().includes(destinationTerm)
+      );
+    }
+    if (params?.search && params.search.trim()) {
+      const searchTerm = params.search.toLowerCase();
+      filteredPackages = filteredPackages.filter(pkg => 
+        pkg.title.toLowerCase().includes(searchTerm) ||
+        pkg.description.toLowerCase().includes(searchTerm) ||
+        pkg.destination.toLowerCase().includes(searchTerm) ||
+        pkg.category.toLowerCase().includes(searchTerm) ||
+        pkg.subCategory.toLowerCase().includes(searchTerm)
       );
     }
     if (params?.minPrice !== undefined) {
-      filteredPackages = filteredPackages.filter(pkg => pkg.price >= params.minPrice!);
+      filteredPackages = filteredPackages.filter(pkg => pkg.price >= parseInt(params.minPrice!, 10));
     }
     if (params?.maxPrice !== undefined) {
-      filteredPackages = filteredPackages.filter(pkg => pkg.price <= params.maxPrice!);
+      filteredPackages = filteredPackages.filter(pkg => pkg.price <= parseInt(params.maxPrice!, 10));
     }
     if (params?.minDuration !== undefined) {
-      filteredPackages = filteredPackages.filter(pkg => pkg.duration >= params.minDuration!);
+      filteredPackages = filteredPackages.filter(pkg => pkg.duration >= parseInt(params.minDuration!, 10));
     }
     if (params?.maxDuration !== undefined) {
-      filteredPackages = filteredPackages.filter(pkg => pkg.duration <= params.maxDuration!);
+      filteredPackages = filteredPackages.filter(pkg => pkg.duration <= parseInt(params.maxDuration!, 10));
     }
 
     // Apply sorting
@@ -208,10 +230,21 @@ export class MemStorage implements IStorage {
     return this.packages.find(pkg => pkg.id === id);
   }
 
+  async getPackageByDestination(destination: string): Promise<Package | undefined> {
+    return this.packages.find(pkg => 
+      pkg.destination.toLowerCase() === destination.toLowerCase() ||
+      pkg.title.toLowerCase().includes(destination.toLowerCase())
+    );
+  }
+
   async createPackage(pkg: InsertPackage): Promise<Package> {
     const newPackage: Package = {
       ...pkg,
-      id: this.nextPackageId++
+      id: this.nextPackageId++,
+      rating: 0,
+      reviews: 0,
+      location: "",
+      image: ""
     };
     this.packages.push(newPackage);
     return newPackage;
@@ -224,7 +257,10 @@ export class MemStorage implements IStorage {
   async createInquiry(inquiry: InsertInquiry): Promise<Inquiry> {
     const newInquiry: Inquiry = {
       ...inquiry,
-      id: this.nextInquiryId++
+      id: this.nextInquiryId++,
+      whatsapp: inquiry.whatsapp || null,
+      message: inquiry.message || null,
+      createdAt: new Date()
     };
     this.inquiries.push(newInquiry);
     return newInquiry;

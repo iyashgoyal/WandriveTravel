@@ -12,22 +12,28 @@ export const packages = pgTable("packages", {
   category: text("category").notNull(),
   subCategory: text("sub_category").notNull(),
   destination: text("destination").notNull(),
-  highlights: text("highlights").array(),
+  highlights: text("highlights").array().notNull(),
+  itinerary: text("itinerary").array().notNull(),
   rating: integer("rating").default(0),
   reviews: integer("reviews").default(0),
-  location: text("location"),
-  image: text("image")
+  location: text("location").notNull().default(""),
+  image: text("image").notNull().default("")
 });
 
 export const inquiries = pgTable("inquiries", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull(),
-  message: text("message").notNull(),
-  travelDates: text("travel_dates"),
-  budget: integer("budget"),
-  packageId: integer("package_id").references(() => packages.id),
-  createdAt: text("created_at")
+  cityOfResidence: text("city_of_residence").notNull(),
+  phoneNumber: text("phone_number").notNull(),
+  whatsapp: text("whatsapp"),
+  travelDestination: text("travel_destination").notNull(),
+  dateOfTravel: text("date_of_travel").notNull(),
+  numberOfPeople: integer("number_of_people").notNull(),
+  vacationType: text("vacation_type").notNull(),
+  budgetRange: text("budget_range").notNull(),
+  message: text("message"),
+  createdAt: timestamp("created_at").defaultNow()
 });
 
 export const insertPackageSchema = createInsertSchema(packages).omit({ id: true });

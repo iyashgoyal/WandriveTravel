@@ -81,24 +81,22 @@ export default function PackageDetail() {
                 
                 <h3 className="text-xl font-semibold mb-4">Highlights</h3>
                 <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
-                  <li>Expertly curated itinerary</li>
-                  <li>Professional tour guides</li>
-                  <li>Comfortable accommodations</li>
-                  <li>All transportation included</li>
-                  <li>24/7 customer support</li>
+                  {pkg.highlights.map((highlight, index) => (
+                    <li key={index}>{highlight}</li>
+                  ))}
                 </ul>
 
                 <h3 className="text-xl font-semibold mb-4">Itinerary</h3>
                 <div className="space-y-4">
-                  {[...Array(pkg.duration)].map((_, i) => (
-                    <div key={i} className="flex gap-4">
+                  {pkg.itinerary.map((day, index) => (
+                    <div key={index} className="flex gap-4">
                       <div className="flex-shrink-0 w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
                         <CalendarDays className="h-6 w-6 text-primary" />
                       </div>
                       <div>
-                        <h4 className="font-semibold">Day {i + 1}</h4>
+                        <h4 className="font-semibold">Day {index + 1}</h4>
                         <p className="text-gray-600">
-                          Sample itinerary description for day {i + 1}. Activities and highlights of the day.
+                          {day}
                         </p>
                       </div>
                     </div>
