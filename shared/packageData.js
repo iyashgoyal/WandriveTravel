@@ -1,5 +1,5 @@
-// CommonJS version of package data for Vercel serverless functions
-module.exports.packageData = [
+// ES Module version of package data for Vercel serverless functions
+export const packageData = [
   // Domestic Packages
   {
     id: 1,
