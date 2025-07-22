@@ -161,7 +161,7 @@ export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' 
     duration: 6,
     category: "domestic",
     subCategory: "nature",
-    imageUrl: "https://images.pexels.com/photos/30778230/pexels-photo-30778230.jpeg?w=800&q=80&v=20250722",
+    imageUrl: "https://images.pexels.com/photos/30778230/pexels-photo-30778230.jpeg?w=800&q=80",
     highlights: ["Houseboat stay", "Ayurveda", "Tea plantations", "Beaches"],
     itinerary: ["Day 1-2: Kochi", "Day 3-4: Alleppey backwaters", "Day 5-6: Munnar"]
   },
