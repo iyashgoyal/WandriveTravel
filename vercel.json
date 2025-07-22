@@ -15,9 +15,11 @@
   ],
   "routes": [
     {
-      "src": "/assets/(.*)",
+      "src": "/(.*)",
       "headers": {
-        "cache-control": "public, max-age=0, must-revalidate"
+        "cache-control": "no-cache, no-store, must-revalidate",
+        "pragma": "no-cache",
+        "expires": "0"
       }
     },
     {
