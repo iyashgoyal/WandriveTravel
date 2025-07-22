@@ -5,8 +5,8 @@ import type { Inquiry } from '@shared/schema';
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'wandrivo@gmail.com',
-    pass: 'pzkv asiu sefl wxko' // You'll need to set this up in your environment variables
+    user: process.env.EMAIL_USER || 'wandrivo@gmail.com',
+    pass: process.env.EMAIL_PASSWORD // App Password from Gmail
   }
 });
 
@@ -32,10 +32,19 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    if (!process.env.EMAIL_PASSWORD) {
+      throw new Error('Email password not configured in environment variables');
+    }
+    const result = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', result.messageId);
     return true;
   } catch (error) {
     console.error('Error sending email:', error);
+    // Log more details about the error
+    if (error instanceof Error) {
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+    }
     return false;
   }
 }
