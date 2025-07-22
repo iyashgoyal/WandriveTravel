@@ -4,13 +4,27 @@ import type { Inquiry } from '@shared/schema';
 // Create reusable transporter object using SMTP transport
 const transporter = nodemailer.createTransport({
   service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER || 'wandrivo@gmail.com',
     pass: process.env.EMAIL_PASSWORD // App Password from Gmail
+  },
+  tls: {
+    rejectUnauthorized: false
   }
 });
 
 export async function sendInquiryEmail(inquiry: Inquiry) {
+  console.log('Starting email send process...');
+  console.log('Using email configuration:', {
+    from: '"Wandrivo Travel" <wandrivo@gmail.com>',
+    to: 'yashgoyal4321@gmail.com',
+    user: process.env.EMAIL_USER,
+    hasPassword: !!process.env.EMAIL_PASSWORD
+  });
+
   const mailOptions = {
     from: '"Wandrivo Travel" <wandrivo@gmail.com>',
     to: 'yashgoyal4321@gmail.com',
@@ -32,11 +46,22 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
   };
 
   try {
+    console.log('Checking email configuration...');
     if (!process.env.EMAIL_PASSWORD) {
       throw new Error('Email password not configured in environment variables');
     }
+    if (!process.env.EMAIL_USER) {
+      throw new Error('Email user not configured in environment variables');
+    }
+
+    console.log('Attempting to send email...');
     const result = await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully:', result.messageId);
+    console.log('Email sent successfully:', {
+      messageId: result.messageId,
+      response: result.response,
+      accepted: result.accepted,
+      rejected: result.rejected
+    });
     return true;
   } catch (error) {
     console.error('Error sending email:', error);
@@ -44,6 +69,13 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
     if (error instanceof Error) {
       console.error('Error message:', error.message);
       console.error('Error stack:', error.stack);
+      // Log specific Gmail SMTP error codes if present
+      if (error.toString().includes('SMTP')) {
+        console.error('SMTP Error detected. Common issues:');
+        console.error('- Check if Gmail "Less secure app access" is enabled');
+        console.error('- Verify App Password is correct');
+        console.error('- Check Gmail account settings for any security blocks');
+      }
     }
     return false;
   }
