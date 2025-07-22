@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'wandrivo@gmail.com',
-    pass: process.env.EMAIL_PASSWORD // You'll need to set this up in your environment variables
+    pass: 'pzkv asiu sefl wxko' // You'll need to set this up in your environment variables
   }
 });
 
