@@ -34,15 +34,15 @@ export default function Footer() {
             <ul className="space-y-2">
               <li className="flex items-center gap-2">
                 <Phone className="h-5 w-5" />
-                <span className="text-gray-400">+1-800-WANDRIVO</span>
+                <span className="text-gray-400">+91 9560011802</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-5 w-5" />
-                <span className="text-gray-400">info@wandrivo.com</span>
+                <span className="text-gray-400">wandrivo@gmail.com</span>
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="h-5 w-5" />
-                <span className="text-gray-400">123 Travel Street, Adventure City</span>
+                <span className="text-gray-400">E-202, Aakriti shantiniketan, Sector 143B</span>
               </li>
             </ul>
           </div>
@@ -57,7 +57,7 @@ export default function Footer() {
               <a href="#" className="text-gray-400 hover:text-white">
                 <Twitter className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white">
+              <a href="https://www.instagram.com/wandrivo/" className="text-gray-400 hover:text-white">
                 <Instagram className="h-6 w-6" />
               </a>
             </div>

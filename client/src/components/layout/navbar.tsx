@@ -196,6 +196,15 @@ export default function Navbar() {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
+                  <NavigationMenuLink href="/about" className={cn(
+                    "px-3 py-2 hover:text-primary transition-colors",
+                    location === "/about" && "text-primary"
+                  )}>
+                    About Us
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+
+                <NavigationMenuItem>
                   <NavigationMenuLink href="/contact" className={cn(
                     "px-3 py-2 hover:text-primary transition-colors",
                     location === "/contact" && "text-primary"
@@ -288,6 +297,11 @@ export default function Navbar() {
               <Link href="/packages?category=group">
                 <a className="block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-accent">
                   Group Trips
+                </a>
+              </Link>
+              <Link href="/about">
+                <a className="block px-3 py-2 rounded-md text-base font-medium hover:text-primary hover:bg-accent">
+                  About Us
                 </a>
               </Link>
               <Link href="/contact">

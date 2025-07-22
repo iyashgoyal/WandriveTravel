@@ -16,7 +16,7 @@ export default function About() {
             </span>
           </h1>
           <p className="text-lg text-gray-600">
-            Your trusted partner in creating unforgettable travel experiences since 2010.
+            Your trusted partner in creating unforgettable travel experiences.
           </p>
         </motion.div>
 

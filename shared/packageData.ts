@@ -30,7 +30,7 @@ export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' 
     duration: 7,
     category: "domestic",
     subCategory: "spiritual",
-    imageUrl: "https://images.unsplash.com/photo-1602416589293-96cd58545efe?w=800&q=80",
+    imageUrl: "https://plus.unsplash.com/premium_photo-1697730398251-40cd8dc57e0b?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D?w=800&q=80",
     highlights: ["Ganges Aarti", "River rafting", "Valley of flowers", "Yoga sessions"],
     itinerary: ["Day 1-2: Rishikesh yoga and rafting", "Day 3-4: Haridwar temples", "Day 5-7: Mussoorie hill station"]
   },
@@ -82,7 +82,7 @@ export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' 
     duration: 8,
     category: "domestic",
     subCategory: "adventure",
-    imageUrl: "https://images.unsplash.com/photo-1514604426857-f54c81c8daef?w=800&q=80",
+    imageUrl: "https://images.pexels.com/photos/3392154/pexels-photo-3392154.jpeg?w=800&q=80",
     highlights: ["Pangong Lake", "Monasteries", "Khardung La", "Nubra Valley"],
     itinerary: ["Day 1-2: Leh acclimatization", "Day 3-4: Monastery tour", "Day 5-6: Pangong Lake", "Day 7-8: Nubra Valley"]
   },
@@ -95,7 +95,7 @@ export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' 
     duration: 7,
     category: "domestic",
     subCategory: "nature",
-    imageUrl: "https://images.unsplash.com/photo-1544634076-92642164717d?w=800&q=80",
+    imageUrl: "https://images.pexels.com/photos/953497/pexels-photo-953497.jpeg?w=800&q=80",
     highlights: ["Tea gardens", "Tiger Hill sunrise", "Monastery visits", "Cable car ride"],
     itinerary: ["Day 1-3: Darjeeling exploration", "Day 4-5: Pelling", "Day 6-7: Gangtok"]
   },
@@ -108,7 +108,7 @@ export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' 
     duration: 6,
     category: "domestic",
     subCategory: "nature",
-    imageUrl: "https://images.unsplash.com/photo-1627894006066-b45ef482e6b7?w=800&q=80",
+    imageUrl: "https://images.pexels.com/photos/1403036/pexels-photo-1403036.jpeg?w=800&q=80",
     highlights: ["Living root bridges", "Cherrapunji", "Dawki River", "Caves"],
     itinerary: ["Day 1-2: Shillong", "Day 3-4: Cherrapunji", "Day 5-6: Dawki and Mawlynnong"]
   },
@@ -121,7 +121,7 @@ export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' 
     duration: 7,
     category: "domestic",
     subCategory: "nature",
-    imageUrl: "https://images.unsplash.com/photo-1566837497706-4570abb17b8e?w=800&q=80",
+    imageUrl: "https://images.pexels.com/photos/2907578/pexels-photo-2907578.jpeg?w=800&q=80",
     highlights: ["Dal Lake", "Gulmarg", "Pahalgam", "Mughal gardens"],
     itinerary: ["Day 1-3: Srinagar and Dal Lake", "Day 4-5: Gulmarg", "Day 6-7: Pahalgam"]
   },
@@ -134,7 +134,7 @@ export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' 
     duration: 8,
     category: "domestic",
     subCategory: "adventure",
-    imageUrl: "https://images.unsplash.com/photo-1623492701902-47dc207df5cf?w=800&q=80",
+    imageUrl: "https://images.pexels.com/photos/15386580/pexels-photo-15386580.jpeg?w=800&q=80",
     highlights: ["Tawang Monastery", "Tribal villages", "Sela Pass", "Wildlife"],
     itinerary: ["Day 1-2: Bomdila", "Day 3-4: Tawang", "Day 5-6: Dirang", "Day 7-8: Ziro Valley"]
   },
@@ -160,7 +160,7 @@ export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' 
     duration: 6,
     category: "domestic",
     subCategory: "nature",
-    imageUrl: "https://images.unsplash.com/photo-1602416589293-96cd58545efe?w=800&q=80",
+    imageUrl: "https://images.pexels.com/photos/30778230/pexels-photo-30778230.jpeg?w=800&q=80",
     highlights: ["Houseboat stay", "Ayurveda", "Tea plantations", "Beaches"],
     itinerary: ["Day 1-2: Kochi", "Day 3-4: Alleppey backwaters", "Day 5-6: Munnar"]
   },
@@ -173,7 +173,7 @@ export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' 
     duration: 7,
     category: "domestic",
     subCategory: "heritage",
-    imageUrl: "https://images.unsplash.com/photo-1600100789887-2215714615e4?w=800&q=80",
+    imageUrl: "https://images.pexels.com/photos/739987/pexels-photo-739987.jpeg?w=800&q=80",
     highlights: ["Hampi ruins", "Mysore Palace", "Coorg hills", "Wildlife"],
     itinerary: ["Day 1-2: Bangalore", "Day 3-4: Mysore", "Day 5-7: Coorg"]
   },
@@ -186,7 +186,7 @@ export const packageData: Array<Omit<Package, 'rating' | 'reviews' | 'location' 
     duration: 6,
     category: "domestic",
     subCategory: "spiritual",
-    imageUrl: "https://images.unsplash.com/photo-1582510803125-8cc9c56ac4d6?w=800&q=80",
+    imageUrl: "https://images.pexels.com/photos/774282/pexels-photo-774282.jpeg?w=800&q=80",
     highlights: ["Meenakshi Temple", "Shore Temple", "Hill stations", "Classical dance"],
     itinerary: ["Day 1-2: Chennai", "Day 3-4: Madurai", "Day 5-6: Mahabalipuram"]
   },

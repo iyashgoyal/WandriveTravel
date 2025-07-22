@@ -37,7 +37,23 @@ export const inquiries = pgTable("inquiries", {
 });
 
 export const insertPackageSchema = createInsertSchema(packages).omit({ id: true });
-export const insertInquirySchema = createInsertSchema(inquiries).omit({ id: true });
+
+export const insertInquirySchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email address"),
+  cityOfResidence: z.string().min(1, "City is required"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  whatsapp: z.string().optional(),
+  travelDestination: z.string().min(1, "Travel destination is required"),
+  dateOfTravel: z.string().min(1, "Date of travel is required"),
+  numberOfPeople: z.preprocess(
+    (val) => Number(val),
+    z.number().min(1, "Must be at least 1 person").max(100, "Maximum 100 people")
+  ),
+  vacationType: z.string().min(1, "Vacation type is required"),
+  budgetRange: z.string().min(1, "Budget range is required"),
+  message: z.string().optional(),
+});
 
 export type Package = typeof packages.$inferSelect;
 export type InsertPackage = z.infer<typeof insertPackageSchema>;
