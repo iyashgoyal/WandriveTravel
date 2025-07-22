@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 export async function sendInquiryEmail(inquiry: Inquiry) {
   const mailOptions = {
     from: '"Wandrivo Travel" <wandrivo@gmail.com>',
-    to: 'wandrivo@gmail.com',
+    to: 'yashgoyal4321@gmail.com',
     subject: `New Travel Inquiry from ${inquiry.name}`,
     html: `
       <h2>New Travel Inquiry Details</h2>
