@@ -6,23 +6,22 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   host: 'smtp.gmail.com',
   port: 587,
-  secure: false,
+  secure: false, // Use STARTTLS
   auth: {
     user: 'wandrivo@gmail.com',
-    pass: 'pzkvasiuseflwxko' // App Password from Gmail
+    pass: 'pzkvasiuseflwxko', // App Password from Gmail
   },
-  tls: {
-    rejectUnauthorized: false
-  }
+  // Remove tls: { rejectUnauthorized: false } unless absolutely necessary
 });
 
 export async function sendInquiryEmail(inquiry: Inquiry) {
   console.log('Starting email send process...');
+
+  // Avoid logging sensitive information
   console.log('Using email configuration:', {
     from: '"Wandrivo Travel" <wandrivo@gmail.com>',
     to: 'yashgoyal4321@gmail.com',
     user: 'wandrivo@gmail.com',
-    hasPassword: 'pzkvasiuseflwxko'
   });
 
   const mailOptions = {
@@ -42,41 +41,15 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
       <p><strong>Vacation Type:</strong> ${inquiry.vacationType}</p>
       <p><strong>Budget Range:</strong> ${inquiry.budgetRange}</p>
       <p><strong>Inquiry Time:</strong> ${inquiry.createdAt}</p>
-    `
+    `,
   };
 
   try {
-    console.log('Checking email configuration...');
-    if (!process.env.EMAIL_PASSWORD) {
-      throw new Error('Email password not configured in environment variables');
-    }
-    if (!process.env.EMAIL_USER) {
-      throw new Error('Email user not configured in environment variables');
-    }
-
-    console.log('Attempting to send email...');
-    const result = await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully:', {
-      messageId: result.messageId,
-      response: result.response,
-      accepted: result.accepted,
-      rejected: result.rejected
-    });
-    return true;
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email sent successfully:', info.messageId);
+    return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('Error sending email:', error);
-    // Log more details about the error
-    if (error instanceof Error) {
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-      // Log specific Gmail SMTP error codes if present
-      if (error.toString().includes('SMTP')) {
-        console.error('SMTP Error detected. Common issues:');
-        console.error('- Check if Gmail "Less secure app access" is enabled');
-        console.error('- Verify App Password is correct');
-        console.error('- Check Gmail account settings for any security blocks');
-      }
-    }
-    return false;
+    console.error('Failed to send email notification:', error.message);
+    throw new Error(`Failed to send email: ${error.message}`);
   }
 }
