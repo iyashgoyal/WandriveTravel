@@ -11,13 +11,13 @@ const transporter = nodemailer.createTransport({
     user: 'wandrivo@gmail.com',
     pass: 'pzkvasiuseflwxko', // App Password from Gmail
   },
-  // Remove tls: { rejectUnauthorized: false } unless absolutely necessary
+  tls: {
+    rejectUnauthorized: false // Add this for production
+  }
 });
 
 export async function sendInquiryEmail(inquiry: Inquiry) {
   console.log('Starting email send process...');
-
-  // Avoid logging sensitive information
   console.log('Using email configuration:', {
     from: '"Wandrivo Travel" <wandrivo@gmail.com>',
     to: 'yashgoyal4321@gmail.com',
@@ -45,11 +45,22 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
   };
 
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully:', info.messageId);
+    // CRITICAL FIX: Wrap sendMail in a Promise and await it
+    const info = await new Promise<any>((resolve, reject) => {
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error('Email sending failed:', error);
+          reject(error);
+        } else {
+          console.log('Email sent successfully:', info.messageId);
+          resolve(info);
+        }
+      });
+    });
+
     return { success: true, messageId: info.messageId };
-  } catch (error) {
-    console.error('Failed to send email notification:', error.message);
-    throw new Error(`Failed to send email: ${error.message}`);
+  } catch (error: any) {
+    console.error('Failed to send email notification:', error?.message || error);
+    throw new Error(`Failed to send email: ${error?.message || 'Unknown error'}`);
   }
 }
