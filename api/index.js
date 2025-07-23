@@ -1,8 +1,6 @@
 // Vercel serverless function entry point with updated package data
-import { packageData } from "../shared/packageData.js";
-
-// CRITICAL FIX: Import email functionality
-import { sendInquiryEmail, testSMTPConnection, testEmailDeployment } from "../server/email.js";
+// CRITICAL FIX: Use CommonJS email utilities for Vercel compatibility
+const { sendInquiryEmail, testSMTPConnection, testEmailDeployment } = require("./email-utils.js");
 
 const samplePackages = [
   // Domestic Packages
@@ -369,7 +367,7 @@ function createInquiry(inquiry) {
   return newInquiry;
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS and no-cache headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
