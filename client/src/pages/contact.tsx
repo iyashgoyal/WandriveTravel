@@ -124,7 +124,7 @@ export default function Contact() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm">+1-800-WANDRIVO</p>
+                  <p className="text-sm">+91 9560011802</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -138,7 +138,7 @@ export default function Contact() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm">info@wandrivo.com</p>
+                  <p className="text-sm">wandrivo@gmail.com</p>
                 </CardContent>
               </Card>
             </motion.div>
