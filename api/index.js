@@ -1,6 +1,9 @@
 // Vercel serverless function entry point with updated package data
 import { packageData } from "../shared/packageData.js";
 
+// CRITICAL FIX: Import email functionality
+import { sendInquiryEmail, testSMTPConnection, testEmailDeployment } from "../server/email.js";
+
 const samplePackages = [
   // Domestic Packages
   {
@@ -366,11 +369,14 @@ function createInquiry(inquiry) {
   return newInquiry;
 }
 
-export default function handler(req, res) {
-  // Enable CORS
+export default async function handler(req, res) {
+  // Enable CORS and no-cache headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
 
   if (req.method === 'OPTIONS') {
     res.status(200).end();
@@ -393,13 +399,55 @@ export default function handler(req, res) {
     } else if (method === 'GET' && url === '/api/inquiries') {
       res.status(200).json(inquiries);
     } else if (method === 'POST' && url === '/api/inquiries') {
+      console.log('📧 Processing new inquiry request in Vercel handler...');
+      console.log('Request body:', req.body);
+      
+      // Create inquiry in memory first
       const inquiry = createInquiry(req.body);
-      res.status(201).json(inquiry);
+      console.log('✅ Inquiry created with ID:', inquiry.id);
+      
+      // CRITICAL FIX: Send email notification
+      console.log('📤 Attempting to send email notification...');
+      let emailResult = null;
+      let emailError = null;
+      
+      try {
+        emailResult = await sendInquiryEmail(inquiry);
+        console.log('✅ Email sent successfully:', emailResult.messageId);
+      } catch (error) {
+        console.error('❌ Email sending failed:', error);
+        emailError = error.message;
+        // Don't throw here - we still want to return the created inquiry
+      }
+
+      // Send response AFTER email processing is complete
+      console.log('📤 Sending response to client...');
+      res.status(201).json({
+        ...inquiry,
+        emailSent: emailResult?.success || false,
+        emailMessageId: emailResult?.messageId || null,
+        emailError: emailError,
+        timestamp: new Date().toISOString()
+      });
+    } 
+    // ADDED: Test email endpoints for debugging
+    else if (method === 'GET' && url === '/api/test-smtp') {
+      console.log('🔍 Testing SMTP connection...');
+      const result = await testSMTPConnection();
+      res.status(200).json(result);
+    } else if (method === 'GET' && url === '/api/test-email') {
+      console.log('📧 Testing email deployment...');
+      const result = await testEmailDeployment();
+      res.status(200).json(result);
     } else {
       res.status(404).json({ message: 'Not found' });
     }
   } catch (error) {
     console.error('API Error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ 
+      message: 'Internal server error',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Server error',
+      timestamp: new Date().toISOString()
+    });
   }
 }

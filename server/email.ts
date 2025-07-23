@@ -15,27 +15,35 @@ console.log('EMAIL_USER:', process.env.EMAIL_USER || 'MISSING');
 console.log('Node Environment:', process.env.NODE_ENV || 'undefined');
 console.log('===================================');
 
-// Create reusable transporter object using Mailsender SMTP transport
-const transporter = nodemailer.createTransport({
-  host: 'smtp.mailersend.net',
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.MAILERSEND_USERNAME,
-    pass: process.env.MAILERSEND_PASSWORD
-  },
-  // Optimized timeouts for Vercel deployment
-  connectionTimeout: 8000,
-  greetingTimeout: 4000,
-  socketTimeout: 8000,
-  // Additional debugging options
-  debug: true, // Enable debug logging
-  logger: true // Enable logger
-});
+// FIXED: Create transporter function instead of global instance for serverless
+function createTransporter() {
+  return nodemailer.createTransport({
+    host: 'smtp.mailersend.net',
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.MAILERSEND_USERNAME,
+      pass: process.env.MAILERSEND_PASSWORD
+    },
+    // Reduced timeouts for Vercel serverless limits
+    connectionTimeout: 10000,
+    greetingTimeout: 5000,
+    socketTimeout: 10000,
+    // Prevent connection pooling in serverless environment
+    pool: false,
+    maxConnections: 1,
+    maxMessages: 1,
+    // Additional debugging options
+    debug: process.env.NODE_ENV === 'development',
+    logger: process.env.NODE_ENV === 'development'
+  } as any);
+}
 
 // Test SMTP connection function - REQUIRED by routes.ts
 export async function testSMTPConnection() {
   console.log('=== TESTING SMTP CONNECTION ===');
+  const transporter = createTransporter();
+  
   try {
     console.log('Attempting to verify SMTP connection...');
     const result = await transporter.verify();
@@ -45,7 +53,7 @@ export async function testSMTPConnection() {
       message: 'SMTP connection verified successfully',
       timestamp: new Date().toISOString()
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ SMTP connection failed:', error);
     console.error('Error details:', {
       message: error.message,
@@ -58,6 +66,9 @@ export async function testSMTPConnection() {
       errorCode: error.code,
       timestamp: new Date().toISOString()
     };
+  } finally {
+    // Close transporter connection
+    transporter.close();
   }
 }
 
@@ -86,10 +97,19 @@ export async function testEmailDeployment() {
     `,
   };
 
+  const transporter = createTransporter();
+
   try {
     console.log('Attempting to send test email...');
-    const info = await new Promise((resolve, reject) => {
-      transporter.sendMail(testMailOptions, (error, info) => {
+    const info = await new Promise<any>((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        console.error('❌ Test email timeout after 20 seconds');
+        reject(new Error('Email sending timeout'));
+      }, 20000);
+
+      transporter.sendMail(testMailOptions, (error: any, info: any) => {
+        clearTimeout(timeoutId);
+        
         if (error) {
           console.error('❌ Test email error in callback:', error);
           reject(error);
@@ -101,16 +121,16 @@ export async function testEmailDeployment() {
     });
 
     console.log('✅ Test email sent successfully!');
-    console.log('Message ID:', (info as any).messageId);
-    console.log('Response:', (info as any).response);
+    console.log('Message ID:', info.messageId);
+    console.log('Response:', info.response);
     
     return { 
       success: true, 
-      messageId: (info as any).messageId,
-      response: (info as any).response,
+      messageId: info.messageId,
+      response: info.response,
       timestamp: new Date().toISOString()
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Test email failed:', error);
     console.error('Error details:', {
       message: error.message,
@@ -126,9 +146,13 @@ export async function testEmailDeployment() {
       errorResponse: error.response,
       timestamp: new Date().toISOString()
     };
+  } finally {
+    // Close transporter connection
+    transporter.close();
   }
 }
 
+// FIXED: Main email sending function with proper error handling
 export async function sendInquiryEmail(inquiry: Inquiry) {
   console.log('=== SENDING INQUIRY EMAIL ===');
   console.log('Timestamp:', new Date().toISOString());
@@ -183,21 +207,23 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
 
   console.log('Mail options prepared. Attempting to send...');
 
+  const transporter = createTransporter();
+
   try {
-    // Test connection before sending
+    // Test connection before sending (optional for faster performance)
     console.log('Step 1: Testing SMTP connection...');
     await transporter.verify();
     console.log('✅ SMTP connection verified');
 
-    // Send the email
+    // Send the email with proper timeout handling
     console.log('Step 2: Sending email...');
-    const info = await new Promise((resolve, reject) => {
+    const info = await new Promise<any>((resolve, reject) => {
       const timeoutId = setTimeout(() => {
-        console.error('❌ Email sending timeout after 30 seconds');
-        reject(new Error('Email sending timeout'));
-      }, 30000); // 30 second timeout
+        console.error('❌ Email sending timeout after 25 seconds');
+        reject(new Error('Email sending timeout - serverless function limit reached'));
+      }, 25000); // 25 second timeout for Vercel limits
 
-      transporter.sendMail(mailOptions, (error, info) => {
+      transporter.sendMail(mailOptions, (error: any, info: any) => {
         clearTimeout(timeoutId);
         
         if (error) {
@@ -224,21 +250,21 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
     });
 
     console.log('✅ EMAIL SENT SUCCESSFULLY!');
-    console.log('Final Message ID:', (info as any).messageId);
-    console.log('Final Response:', (info as any).response);
-    console.log('Email accepted by:', (info as any).accepted);
-    console.log('Email rejected by:', (info as any).rejected);
+    console.log('Final Message ID:', info.messageId);
+    console.log('Final Response:', info.response);
+    console.log('Email accepted by:', info.accepted);
+    console.log('Email rejected by:', info.rejected);
     
     return { 
       success: true, 
-      messageId: (info as any).messageId,
+      messageId: info.messageId,
       message: 'Inquiry email sent successfully',
-      response: (info as any).response,
-      accepted: (info as any).accepted,
-      rejected: (info as any).rejected,
+      response: info.response,
+      accepted: info.accepted,
+      rejected: info.rejected,
       timestamp: new Date().toISOString()
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ EMAIL SENDING FAILED!');
     console.error('Error message:', error.message);
     console.error('Error code:', error.code);
@@ -255,16 +281,23 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
     } else if (error.code === 'EENVELOPE') {
       errorMessage = 'Invalid email addresses - check from/to addresses';
     } else if (error.responseCode === 450) {
-      errorMessage = 'Domain verification required - check Mailsender dashboard';
+      errorMessage = 'Domain verification required - check MailerSend dashboard';
+    } else if (error.message.includes('timeout')) {
+      errorMessage = 'Email sending timeout - Vercel function time limit reached';
     }
     
     throw new Error(errorMessage + ': ' + error.message);
+  } finally {
+    // Always close the transporter connection
+    transporter.close();
   }
 }
 
 // Verify transporter configuration on startup
 export async function verifyEmailConfiguration() {
   console.log('=== VERIFYING EMAIL CONFIGURATION ===');
+  const transporter = createTransporter();
+  
   try {
     console.log('Checking transporter configuration...');
     await transporter.verify();
@@ -274,23 +307,14 @@ export async function verifyEmailConfiguration() {
       message: 'Email configuration verified',
       timestamp: new Date().toISOString()
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Email configuration verification failed:', error);
-    console.error('Configuration error details:', {
-      message: error.message,
-      code: error.code,
-      host: 'smtp.mailersend.net',
-      port: 587,
-      hasUsername: !!process.env.MAILERSEND_USERNAME,
-      hasPassword: !!process.env.MAILERSEND_PASSWORD
-    });
     return { 
       success: false, 
       error: error.message,
-      errorCode: error.code,
       timestamp: new Date().toISOString()
     };
+  } finally {
+    transporter.close();
   }
 }
-
-console.log('📧 Email module loaded successfully');
