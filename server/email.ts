@@ -8,8 +8,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: process.env.EMAIL_USER || 'wandrivo@gmail.com',
-    pass: process.env.EMAIL_PASSWORD // App Password from Gmail
+    user: 'wandrivo@gmail.com',
+    pass: 'pzkvasiuseflwxko' // App Password from Gmail
   },
   tls: {
     rejectUnauthorized: false
@@ -21,8 +21,8 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
   console.log('Using email configuration:', {
     from: '"Wandrivo Travel" <wandrivo@gmail.com>',
     to: 'yashgoyal4321@gmail.com',
-    user: process.env.EMAIL_USER,
-    hasPassword: !!process.env.EMAIL_PASSWORD
+    user: 'wandrivo@gmail.com',
+    hasPassword: 'pzkvasiuseflwxko'
   });
 
   const mailOptions = {
