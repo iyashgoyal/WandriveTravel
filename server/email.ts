@@ -20,13 +20,13 @@ export async function sendInquiryEmail(inquiry: Inquiry) {
   console.log('Starting email send process...');
   console.log('Using email configuration:', {
     from: '"Wandrivo Travel" <wandrivo@gmail.com>',
-    to: 'yashgoyal4321@gmail.com',
+    to: 'wandrivo@gmail.com',
     user: 'wandrivo@gmail.com',
   });
 
   const mailOptions = {
     from: '"Wandrivo Travel" <wandrivo@gmail.com>',
-    to: 'yashgoyal4321@gmail.com',
+    to: 'wandrivo@gmail.com',
     subject: `New Travel Inquiry from ${inquiry.name}`,
     html: `
       <h2>New Travel Inquiry Details</h2>
