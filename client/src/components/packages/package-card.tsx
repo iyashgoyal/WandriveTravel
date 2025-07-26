@@ -33,9 +33,9 @@ export default function PackageCard({ package: pkg, index }: PackageCardProps) {
       }}
       className="h-full"
     >
-      <Card className="overflow-hidden h-full flex flex-col hover:shadow-xl transition-shadow duration-300">
+      <Card className="overflow-hidden h-full max-h-96 sm:max-h-none flex flex-col hover:shadow-xl transition-shadow duration-300">
         <div 
-          className="aspect-[4/3] relative overflow-hidden cursor-pointer"
+          className="aspect-[4/2.5] sm:aspect-[4/3] relative overflow-hidden cursor-pointer"
           onClick={() => setLocation(`/packages/${pkg.id}`)}
         >
           <motion.img
@@ -55,9 +55,9 @@ export default function PackageCard({ package: pkg, index }: PackageCardProps) {
           </motion.div>
         </div>
 
-        <CardContent className="p-4 flex-grow">
+        <CardContent className="p-3 sm:p-4 flex-grow">
           <motion.h3 
-            className="text-lg md:text-xl font-semibold mb-2 line-clamp-2 hover:text-primary cursor-pointer"
+            className="text-base sm:text-lg md:text-xl font-semibold mb-2 line-clamp-2 hover:text-primary cursor-pointer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
@@ -66,7 +66,7 @@ export default function PackageCard({ package: pkg, index }: PackageCardProps) {
             {pkg.title}
           </motion.h3>
           <motion.p 
-            className="text-gray-600 text-sm mb-4 line-clamp-3"
+            className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
@@ -75,7 +75,7 @@ export default function PackageCard({ package: pkg, index }: PackageCardProps) {
           </motion.p>
 
           <motion.div 
-            className="flex justify-between text-sm text-gray-500"
+            className="justify-between text-sm text-gray-500 hidden sm:flex"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
@@ -85,16 +85,16 @@ export default function PackageCard({ package: pkg, index }: PackageCardProps) {
           </motion.div>
         </CardContent>
 
-        <CardFooter className="p-4 pt-0 space-x-2">
+        <CardFooter className="p-3 sm:p-4 pt-0 flex flex-col sm:flex-row gap-2 sm:space-x-2">
           <Button 
             variant="outline"
-            className="w-1/2"
+            className="w-full sm:w-1/2 text-xs sm:text-sm px-2 py-1.5 sm:py-2"
             onClick={() => setLocation(`/packages/${pkg.id}`)}
           >
             View Details
           </Button>
           <Button 
-            className="w-1/2 bg-primary hover:bg-primary/90"
+            className="w-full sm:w-1/2 bg-primary hover:bg-primary/90 text-xs sm:text-sm px-2 py-1.5 sm:py-2"
             onClick={() => setLocation(`/contact?package=${pkg.id}`)}
           >
             Book Now
